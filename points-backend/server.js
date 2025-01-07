@@ -2,7 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path'); // For serving static files
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -45,7 +45,7 @@ const pointsSchema = new mongoose.Schema({
 
 const Points = mongoose.model('Points', pointsSchema);
 
-// Routes
+// API Routes
 app.post('/api/points', async (req, res) => {
   try {
     const points = new Points(req.body);
@@ -99,7 +99,7 @@ if (process.env.NODE_ENV === 'production') {
   const buildPath = path.join(__dirname, '../frontend/build');
   app.use(express.static(buildPath));
 
-  // Handle React routing, return index.html if a route is not found
+  // Handle React routing
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(buildPath, 'index.html'));
   });
