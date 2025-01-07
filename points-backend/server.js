@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path'); // For serving static files
 require('dotenv').config();
 
 const app = express();
@@ -69,7 +70,7 @@ app.get('/api/points/monthly-total', async (req, res) => {
   try {
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 0);
-    
+
     const monthlyPoints = await Points.aggregate([
       {
         $match: {
@@ -86,12 +87,24 @@ app.get('/api/points/monthly-total', async (req, res) => {
         }
       }
     ]);
-    
+
     res.json({ total: monthlyPoints[0]?.total || 0 });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
+// ✅ Serve static files from the React frontend app in production
+if (process.env.NODE_ENV === 'production') {
+  const buildPath = path.join(__dirname, '../frontend/build');
+  app.use(express.static(buildPath));
+
+  // Handle React routing, return index.html if a route is not found
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(buildPath, 'index.html'));
+  });
+}
+
+// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
