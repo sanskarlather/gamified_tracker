@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Minus } from 'lucide-react';
 
 // Use a direct URL in development, or your deployed backend URL in production
 const API_URL = 'https://gamified-tracker.onrender.com';
@@ -182,105 +181,100 @@ const PointsTracker = () => {
 
   return (
     <div className="space-y-4 p-4">
-      <Card>
-        <CardHeader>
-          <CardTitle>Daily Points Tracker</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {error && (
-            <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">
-              {error}
-            </div>
-          )}
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <h3 className="font-bold text-lg">Points to Earn</h3>
-              <div className="space-y-2 bg-gray-50 p-4 rounded">
-                {Object.entries(dailyPoints).map(([key, value]) => (
-                  <div key={key} className="flex items-center justify-between">
-                    <label className="capitalize">
-                      {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
-                      {key === 'reachOffice' && ' (2 points)'}
-                      {typeof value === 'boolean' && key !== 'reachOffice' && ' (1 point)'}
-                    </label>
-                    {typeof value === 'boolean' ? (
-                      <input
-                        type="checkbox"
-                        checked={value}
-                        onChange={(e) => setDailyPoints({...dailyPoints, [key]: e.target.checked})}
-                        className="w-4 h-4"
-                      />
-                    ) : (
-                      <input
-                        type="number"
-                        value={value}
-                        min="0"
-                        onChange={(e) => setDailyPoints({...dailyPoints, [key]: parseInt(e.target.value) || 0})}
-                        className="w-20 p-1 border rounded"
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <h3 className="font-bold text-lg">Deductions</h3>
-              <div className="space-y-2 bg-gray-50 p-4 rounded">
-                {Object.entries(deductions).map(([key, value]) => (
-                  <div key={key} className="flex items-center justify-between">
-                    <label className="capitalize">
-                      {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
-                    </label>
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold mb-4">Daily Points Tracker</h2>
+        {error && (
+          <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">
+            {error}
+          </div>
+        )}
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <h3 className="font-bold text-lg">Points to Earn</h3>
+            <div className="space-y-2 bg-gray-50 p-4 rounded">
+              {Object.entries(dailyPoints).map(([key, value]) => (
+                <div key={key} className="flex items-center justify-between">
+                  <label className="capitalize">
+                    {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
+                    {key === 'reachOffice' && ' (2 points)'}
+                    {typeof value === 'boolean' && key !== 'reachOffice' && ' (1 point)'}
+                  </label>
+                  {typeof value === 'boolean' ? (
+                    <input
+                      type="checkbox"
+                      checked={value}
+                      onChange={(e) => setDailyPoints({...dailyPoints, [key]: e.target.checked})}
+                      className="w-4 h-4"
+                    />
+                  ) : (
                     <input
                       type="number"
                       value={value}
                       min="0"
-                      onChange={(e) => setDeductions({...deductions, [key]: parseInt(e.target.value) || 0})}
+                      onChange={(e) => setDailyPoints({...dailyPoints, [key]: parseInt(e.target.value) || 0})}
                       className="w-20 p-1 border rounded"
                     />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          
-          <div className="mt-6">
-            <div className="flex justify-between items-center mb-4">
-              <div className="text-xl font-bold">
-                Monthly Total: {monthlyTotal} points
-              </div>
-              <div className="text-xl font-bold">
-                Today's Total: {calculateDailyTotal()}
-              </div>
-            </div>
-            
-            <button
-              onClick={saveDay}
-              disabled={isLoading}
-              className={`w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300 ${isLoading ? 'cursor-not-allowed' : ''}`}
-            >
-              {isLoading ? 'Saving...' : 'Save Day'}
-            </button>
-          </div>
-          
-          <div className="mt-6">
-            <h3 className="font-bold mb-2">History</h3>
-            <div className="space-y-1">
-              {history.map((day, index) => (
-                <div key={index} className="flex justify-between">
-                  <span>{day.date}</span>
-                  <span className={day.points >= 0 ? 'text-green-600' : 'text-red-600'}>
-                    {day.points > 0 ? <Plus className="inline w-4 h-4" /> : <Minus className="inline w-4 h-4" />}
-                    {Math.abs(day.points)}
-                  </span>
+                  )}
                 </div>
               ))}
             </div>
           </div>
-        </CardContent>
-      </Card>
+          
+          <div className="space-y-2">
+            <h3 className="font-bold text-lg">Deductions</h3>
+            <div className="space-y-2 bg-gray-50 p-4 rounded">
+              {Object.entries(deductions).map(([key, value]) => (
+                <div key={key} className="flex items-center justify-between">
+                  <label className="capitalize">
+                    {key.replace(/([A-Z])/g, ' $1').toLowerCase()}
+                  </label>
+                  <input
+                    type="number"
+                    value={value}
+                    min="0"
+                    onChange={(e) => setDeductions({...deductions, [key]: parseInt(e.target.value) || 0})}
+                    className="w-20 p-1 border rounded"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-6">
+          <div className="flex justify-between items-center mb-4">
+            <div className="text-xl font-bold">
+              Monthly Total: {monthlyTotal} points
+            </div>
+            <div className="text-xl font-bold">
+              Today's Total: {calculateDailyTotal()}
+            </div>
+          </div>
+          
+          <button
+            onClick={saveDay}
+            disabled={isLoading}
+            className={`w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300 ${isLoading ? 'cursor-not-allowed' : ''}`}
+          >
+            {isLoading ? 'Saving...' : 'Save Day'}
+          </button>
+        </div>
+        
+        <div className="mt-6">
+          <h3 className="font-bold mb-2">History</h3>
+          <div className="space-y-1">
+            {history.map((day, index) => (
+              <div key={index} className="flex justify-between">
+                <span>{day.date}</span>
+                <span className={day.points >= 0 ? 'text-green-600' : 'text-red-600'}>
+                  {day.points > 0 ? '+' : '-'}{Math.abs(day.points)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
