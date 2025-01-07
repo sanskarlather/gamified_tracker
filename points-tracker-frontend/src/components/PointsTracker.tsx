@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Plus, Minus } from 'lucide-react';
 
 // Use a direct URL in development, or your deployed backend URL in production
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://gamified-tracker.onrender.com';
 
 const PointsTracker = () => {
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
