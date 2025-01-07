@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Plus, Minus } from 'lucide-react';
 
 // Use a direct URL in development, or your deployed backend URL in production
