@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import { Plus, Minus } from 'lucide-react';
 
 // Use a direct URL in development, or your deployed backend URL in production
 const API_URL = 'https://gamified-tracker.onrender.com';
